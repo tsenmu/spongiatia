@@ -6,6 +6,7 @@ router.get('/search/', function(req, res, next) {
   var query = req.query;
   var q = query.q;
   var requestCallback = function (error, response, body) {
+    console.log(body);
     res.json(body);
   }
   var uri = 'http://api.stackexchange.com/2.2/search/advanced' +
@@ -13,7 +14,11 @@ router.get('/search/', function(req, res, next) {
     '&sort=activity' +
     '&site=stackoverflow' +
     '&q=' + q;
-  request(uri, requestCallback);
+  request({
+    uri: uri,
+    gzip: true,
+    json: true
+  }, requestCallback);
 });
 
 module.exports = router;
