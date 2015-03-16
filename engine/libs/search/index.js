@@ -107,7 +107,7 @@ exports.search = function(query) {
     });
     return Q.all([questions, retrieveAnswers(answerIds)]);
   })
-  .then(function(questions, answers) {
+  .spread(function(questions, answers) {
     _.forEach(questions, function(question, index) {
       question.accepted_answer = answers[index];
     });
