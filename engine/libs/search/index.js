@@ -66,6 +66,7 @@ var retrieveQuestions = function(questionIds) {
   _.forEach(questionIds, function(questionId) {
     stringifiedQuestionIds += questionId + ';'
   });
+  stringifiedQuestionIds = _.trimRight(stringifiedQuestionIds, ';');
   console.log(stringifiedQuestionIds);
   var questionUri = API_PREFIX + '/questions/' + stringifiedQuestionIds + '?' +
   '&site=stackoverflow' + 
