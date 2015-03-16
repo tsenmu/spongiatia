@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var Q = require('Q');
+var Q = require('q');
 var request = require('request');
 
 var API_PREFIX = 'http://api.stackexchange.com/2.2';
@@ -65,7 +65,6 @@ var retrieveAnswer = function(answerId) {
   */
   var answerUri = API_PREFIX + '/answers/' + answerId + '?' +
   '&site=stackoverflow' +
-  '&sort=votes' +
   '&filter=!--pn9shfL_dA';
   request({
     uri: answerUri,
