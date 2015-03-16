@@ -6,25 +6,29 @@ var Q = require('q');
 var search = require('../libs/search');
 
 
-router.get('/search/', function(req, res, next) {
-  var query = req.query;
-  var q = query.q;
+router.post('/search/', function(req, res, next) {
+  var body = req.body;
+  var q = body.error_message;
+  var context = body.context;
   search.search(q)
   .then(function(questions) {
-    // var deferred = Q.defer();
     res.json(questions);
-    // res.render('result', questions, function(error) {
-    //   if (error) {
-    //     deferred.reject(error);
-    //   } else {
-    //     deferred.resolve();
-    //   }
-    // });
-    // return deferred.promise;
   })
   .then(undefined, function(error) {
-    console.log(error);
-    res.sendStatus(500);
+    res.render('error', error);
+  });
+});
+
+router.get('/search/', function(req, res, next) {
+  var query = req.query;
+  var q = query.error_message;
+  var context = query.context;
+  search.search(q)
+  .then(function(questions) {
+    res.json(questions);
+  })
+  .then(undefined, function(error) {
+    res.render('error', error);
   });
 });
 
