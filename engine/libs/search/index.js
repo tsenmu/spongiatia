@@ -1,17 +1,9 @@
 var _ = require('lodash');
 var Q = require('q');
 var request = require('request');
+var helper = require('./helper');
 
 var API_PREFIX = 'http://api.stackexchange.com/2.2';
-
-var stringifyArray = function(arr) {
-  var result = '';
-  _.forEach(arr, function(el) {
-    result += el + ';'
-  });
-  result = _.trimRight(result, ';');
-  return result;
-}
 
 var search = function(query) {
   var deferred = Q.defer();
@@ -47,7 +39,7 @@ var search = function(query) {
 
 var retrieveAnswers = function(answerIds) {
   var deferred = Q.defer();
-  var stringifiedAnswerIds = stringifyArray(answerIds);
+  var stringifiedAnswerIds = helper.stringifyArray(answerIds);
   /*
     http://api.stackexchange.com/docs/answers-by-ids
     Filter: !--pn9shfL_dA for retrieving only answer body in markdown.
@@ -73,7 +65,7 @@ var retrieveAnswers = function(answerIds) {
 
 var retrieveQuestions = function(questionIds) {
   var deferred = Q.defer();
-  var stringifiedQuestionIds = stringifyArray(questionIds);
+  var stringifiedQuestionIds = helper.stringifyArray(questionIds);
   var questionUri = API_PREFIX + '/questions/' + stringifiedQuestionIds + '?' +
   '&site=stackoverflow' + 
   '&sort=votes' +
