@@ -86,9 +86,9 @@ var retrieveQuestions = function(questionIds) {
   Q.all(_.map(questionIds, retrieveQuestion))
   .then(function(questions) {
     var acceptedAnswerIds = _.map(questions, function(question) {
+      console.log(question);
       return question.accepted_answer_id;
     });
-    console.log(acceptedAnswerIds);
     Q.all(_.map(acceptedAnswerIds, retrieveAnswer))
     .then(function(answers) {
       answers = _.map(answers, function(answer) {
