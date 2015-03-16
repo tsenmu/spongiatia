@@ -4,7 +4,7 @@ var request = require('request');
 
 var API_PREFIX = 'http://api.stackexchange.com/2.2';
 
-var stringifyArray(arr) {
+var stringifyArray = function(arr) {
   var result = '';
   _.forEach(arr, function(el) {
     result += el + ';'
