@@ -75,6 +75,7 @@ var retrieveQuestions = function(questionIds) {
     gzip: true,
     json: true
   }, function(error, response, body) {
+    console.log(body);
     if (error) {
       deferred.reject(error);
     } else {
