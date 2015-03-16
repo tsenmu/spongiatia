@@ -52,7 +52,6 @@ var retrieveAnswers = function(answerIds) {
     http://api.stackexchange.com/docs/answers-by-ids
     Filter: !--pn9shfL_dA for retrieving only answer body in markdown.
   */
-  console.log(stringifiedAnswerIds);
   var answerUri = API_PREFIX + '/answers/' + stringifiedAnswerIds + '?' +
   '&site=stackoverflow' +
   '&filter=!--pn9shfL_dA';
@@ -61,6 +60,7 @@ var retrieveAnswers = function(answerIds) {
     gzip: true,
     json: true
   }, function(error, response, body) {
+    console.log(response);
     if (error) {
       deferred.reject(error);
     } else {
