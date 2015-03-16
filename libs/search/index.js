@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash');
 var Q = require('q');
 var request = require('request');
@@ -102,6 +104,7 @@ exports.search = function(query) {
     _.forEach(questions, function(question, index) {
       question.accepted_answer = answers[index];
     });
+    questions = helper.assembleObject(questions);
     deferred.resolve(questions);
   }, deferred.reject)
   .done();
