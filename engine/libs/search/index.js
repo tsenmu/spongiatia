@@ -10,6 +10,7 @@ var stringifyArray = function(arr) {
     result += el + ';'
   });
   result = _.trimRight(result, ';');
+  return result;
 }
 
 var search = function(query) {
