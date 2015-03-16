@@ -105,7 +105,7 @@ exports.search = function(query) {
     _.forEach(questions, function(question) {
       answerIds.push(question.accepted_answer_id);
     });
-    return [questions, retrieveAnswers(answerIds)];
+    return Q.all([questions, retrieveAnswers(answerIds)]);
   })
   .then(function(questions, answers) {
     _.forEach(questions, function(question, index) {
