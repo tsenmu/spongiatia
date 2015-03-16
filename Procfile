@@ -1,1 +1,1 @@
-web: forever start engine/bin/www
+web: node engine/bin/www
