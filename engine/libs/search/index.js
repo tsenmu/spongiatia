@@ -36,28 +36,7 @@ var search = function(query) {
   return deferred.promise;
 }
 
-var retrieveQuestion = function(questionId) {
-  var deferred = Q.defer();
-  var questionUri = API_PREFIX + '/questions/' + questionId + '?' +
-  '&site=stackoverflow' + 
-  '&sort=votes' +
-  '&filter=!4(Yr(zu(6cPEMGE59'; 
-  request({
-    uri: questionUri,
-    gzip: true,
-    json: true
-  }, function(error, response, body) {
-    if (error) {
-      deferred.reject(error);
-    } else {
-      var items = body.items;
-      deferred.resolve(items);
-    }
-  });
-  return deferred.promise;      
-}
-
-var retrieveAnswer = function(answerId) {
+var retrieveAnswers = function(answerIds) {
   var deferred = Q.defer();
   /*
     http://api.stackexchange.com/docs/answers-by-ids
@@ -83,27 +62,27 @@ var retrieveAnswer = function(answerId) {
 
 var retrieveQuestions = function(questionIds) {
   var deferred = Q.defer();
-  Q.all(_.map(questionIds, retrieveQuestion))
-  .then(function(questions) {
-    console.log(questions);
-    var acceptedAnswerIds = _.map(questions, function(question) {
-      return question[0].accepted_answer_id;
-    });
-    Q.all(_.map(acceptedAnswerIds, retrieveAnswer))
-    .then(function(answers) {
-      answers = _.map(answers, function(answer) {
-        var obj = {};
-        obj.accepted_answer = answer;
-        return answer;
-      });
-      questions = _.forEach(questions, function(question, index) {
-        _.assign(question, answers[index]);
-      });
-      deferred.resolve(questions);
-    }, deferred.reject);
-  })
-  .done();
-  return deferred.promise;
+  var stringifiedQuestionIds = '';
+  _.forEach(questionIds, function(questionId) {
+    stringifiedQuestionIds += questionId + ';'
+  });
+  var questionUri = API_PREFIX + '/questions/' + stringifiedQuestionIds + '?' +
+  '&site=stackoverflow' + 
+  '&sort=votes' +
+  '&filter=!4(Yr(zu(6cPEMGE59'; 
+  request({
+    uri: questionUri,
+    gzip: true,
+    json: true
+  }, function(error, response, body) {
+    if (error) {
+      deferred.reject(error);
+    } else {
+      var items = body.items;
+      deferred.resolve(items);
+    }
+  });
+  return deferred.promise; 
 }
 
 
@@ -112,8 +91,11 @@ exports.search = function(query) {
   var deferred = Q.defer();
   search(query)
   .then(retrieveQuestions)
-  .then(deferred.resolve, deferred.reject)
-  .done();
+  .then(function(questions) {
+    console.log(questions);
+  })
+  // .then(deferred.resolve, deferred.reject)
+  // .done();
   return deferred.promise;
 }
 
