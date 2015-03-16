@@ -1,1 +1,1 @@
-web: node engine/bin/www
+web: node bin/www
