@@ -69,6 +69,7 @@ var retrieveAnswers = function(answerIds) {
       deferred.resolve(items);
     }
   });
+  return deferred.promise;
 }
 
 
