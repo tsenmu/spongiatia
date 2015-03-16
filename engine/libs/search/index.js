@@ -4,6 +4,14 @@ var request = require('request');
 
 var API_PREFIX = 'http://api.stackexchange.com/2.2';
 
+var stringifyArray(arr) {
+  var result = '';
+  _.forEach(arr, function(el) {
+    result += el + ';'
+  });
+  result = _.trimRight(result, ';');
+}
+
 var search = function(query) {
   var deferred = Q.defer();
   /*
@@ -38,11 +46,12 @@ var search = function(query) {
 
 var retrieveAnswers = function(answerIds) {
   var deferred = Q.defer();
+  var stringifiedAnswerIds = stringifyArray(answerIds);
   /*
     http://api.stackexchange.com/docs/answers-by-ids
     Filter: !--pn9shfL_dA for retrieving only answer body in markdown.
   */
-  var answerUri = API_PREFIX + '/answers/' + answerId + '?' +
+  var answerUri = API_PREFIX + '/answers/' + stringifiedAnswerIds + '?' +
   '&site=stackoverflow' +
   '&filter=!--pn9shfL_dA';
   request({
@@ -62,11 +71,7 @@ var retrieveAnswers = function(answerIds) {
 
 var retrieveQuestions = function(questionIds) {
   var deferred = Q.defer();
-  var stringifiedQuestionIds = '';
-  _.forEach(questionIds, function(questionId) {
-    stringifiedQuestionIds += questionId + ';'
-  });
-  stringifiedQuestionIds = _.trimRight(stringifiedQuestionIds, ';');
+  var stringifiedQuestionIds = stringifyArray(questionIds);
   var questionUri = API_PREFIX + '/questions/' + stringifiedQuestionIds + '?' +
   '&site=stackoverflow' + 
   '&sort=votes' +
