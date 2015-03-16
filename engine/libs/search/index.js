@@ -85,10 +85,9 @@ var retrieveQuestions = function(questionIds) {
   var deferred = Q.defer();
   Q.all(_.map(questionIds, retrieveQuestion))
   .then(function(questions) {
+    console.log(questions);
     var acceptedAnswerIds = _.map(questions, function(question) {
-      console.log(question);
-      console.log(question.accepted_answer_id);
-      return question.accepted_answer_id;
+      return question[0].accepted_answer_id;
     });
     Q.all(_.map(acceptedAnswerIds, retrieveAnswer))
     .then(function(answers) {
