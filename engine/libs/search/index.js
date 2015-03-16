@@ -60,12 +60,10 @@ var retrieveAnswers = function(answerIds) {
     gzip: true,
     json: true
   }, function(error, response, body) {
-    console.log(response);
     if (error) {
       deferred.reject(error);
     } else {
       var items = body.items;
-      console.log(items);
       deferred.resolve(items);
     }
   });
