@@ -67,7 +67,6 @@ var retrieveQuestions = function(questionIds) {
     stringifiedQuestionIds += questionId + ';'
   });
   stringifiedQuestionIds = _.trimRight(stringifiedQuestionIds, ';');
-  console.log(stringifiedQuestionIds);
   var questionUri = API_PREFIX + '/questions/' + stringifiedQuestionIds + '?' +
   '&site=stackoverflow' + 
   '&sort=votes' +
@@ -77,7 +76,6 @@ var retrieveQuestions = function(questionIds) {
     gzip: true,
     json: true
   }, function(error, response, body) {
-    console.log(body);
     if (error) {
       deferred.reject(error);
     } else {
@@ -95,10 +93,19 @@ exports.search = function(query) {
   search(query)
   .then(retrieveQuestions)
   .then(function(questions) {
-    console.log(questions);
+    var answerIds = [];
+    _.forEach(questions, function(question) {
+      answerIds.push(question.accepted_answer_id);
+    });
+    return [questions, retrieveAnswers(answerIds)];
   })
-  // .then(deferred.resolve, deferred.reject)
-  // .done();
+  .then(function(questions, answers) {
+    _.forEach(questions, function(question, index) {
+      question.accepted_answer = answers[index];
+    });
+    deferred.resolve(questions);
+  }, deferred.reject)
+  .done();
   return deferred.promise;
 }
 
