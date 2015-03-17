@@ -14,7 +14,6 @@ exports.stringifyArray = function(arr) {
 exports.assembleObject = function(input) {
   var output = {};
   output.suggestions = [];
-  console.log(input);
   _.forEach(input, function(item, index) {
     var suggestion = {};
     suggestion.question = {
