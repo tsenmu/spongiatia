@@ -91,7 +91,7 @@ var retrieveQuestions = function(questionIds) {
 
 exports.search = function(query) {
   var deferred = Q.defer();
-  search(query)
+  search(query + ' JavaScript')
   .then(retrieveQuestions)
   .then(function(questions) {
     var answerIds = [];
